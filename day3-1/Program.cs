@@ -21,4 +21,4 @@ for(var i = 0; i < len; i++) {
 }
 var e = ~(-1 ^0x0FFF | g);
 
-Console.WriteLine($"Result: {g} + {e} = " + g * e);
+Console.WriteLine($"Result: {g} * {e} = " + g * e);
