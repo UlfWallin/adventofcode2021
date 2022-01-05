@@ -1,11 +1,9 @@
 import numpy as np
-from pprint import pprint
-import logging
 
 draws = []
 boards = []
 
-with open('input/input.txt') as file:
+with open('input/sample.txt') as file:
     header = file.readline() # Read draws
     draws.extend(map(int, header.split(',')))
     file.readline() # Skip empty line
@@ -17,10 +15,6 @@ with open('input/input.txt') as file:
             nums = []
     else:
         boards.append(nums)
-
-print(draws)
-print(boards)
-
 
 bingo = False
 bingo_board = 0
