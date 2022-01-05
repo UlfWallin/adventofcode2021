@@ -1,13 +1,12 @@
-life_support=[]
-with open('input/input.txt') as file:
-    life_support = file.readlines()
-    life_support = [line.rstrip() for line in life_support]
-    
-
 def filterbits(arr, bit=0):
     result0 = list(filter(lambda l: l[bit]=='0', arr))
     result1 = list(filter(lambda l: l[bit]=='1', arr))
     return result0, result1
+
+life_support=[]
+with open('input/input.txt') as file:
+    life_support = file.readlines()
+    life_support = [line.rstrip() for line in life_support]
 
 bit_len = len(life_support[0])
 oxygen = 0
