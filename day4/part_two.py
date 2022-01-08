@@ -16,7 +16,6 @@ with open('input/input.txt') as file:
     else:
         boards.append(nums)
 
-
 bingo = False
 bingo_board = 0
 bingo_boards = boards
