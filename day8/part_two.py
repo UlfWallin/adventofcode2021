@@ -1,57 +1,49 @@
 import pandas as pd
 
-#   dddd
-#  e    a
-#  e    a
-#   ffff
-#  g    b
-#  g    b
-#   cccc
-
-#   dddd
-#  e    a
-#  e    a
-#   ffff
-#  g    b
-#  g    b
-#   cccc
+def decode(output, segments):
+    decoded = ""
+    for o in output:
+        decoded += str(next(k for k, v in segments.items() if v == set(o)))
+    return decoded
 
 
-
-# segments = ['abcefg', 'cf', 'acdeg', 'acdfg', 'bcdf', 'abdfg', 'abdefg', 'acf', 'abcdefg', 'abcdfg']
-patterns = pd.read_csv("input/sample.txt", sep='|', names=['signal_pattern', 'out'])
-
-chars = {2: '1', 3: '7', 4: '4', 7: '8'}
-
+values = []
+patterns = pd.read_csv("input/input.txt", sep='|', names=['signal_pattern', 'out'])
 for index, row in patterns.iterrows():
     pattern = row["signal_pattern"].split()
     out = row["out"].split()
-    segments = zip(map(len, pattern), pattern)
-    pattern_char = dict()
+    display_segments = dict()
     
+    # Fill with unique
     for l, seg in zip(map(len, pattern), pattern):
+        segset = set(seg)
         if l == 2:
-            pattern_char[seg] = 1
+            display_segments[1] = segset
         elif l == 3:
-            pattern_char[seg] = 7
+            display_segments[7] = segset
         elif l == 4:
-            pattern_char[seg] = 4
+            display_segments[4] = segset
         elif l == 7:
-            pattern_char[seg] = 8
+            display_segments[8] = segset
+            
+    # New pass, fill in the blanks
+    for l, seg in zip(map(len, pattern), pattern):
+        segset = set(seg)
+        if l == 5:
+            if ((display_segments[4] - display_segments[1]).issubset(segset)):
+                display_segments[5] = segset
+            elif (segset.issuperset(display_segments[1])):
+                display_segments[3] = segset
+            else:
+                display_segments[2] = segset
+        elif l == 6:
+            if ((display_segments[8] - display_segments[1]).issubset(segset)):
+                display_segments[6] = segset
+            elif (segset.issuperset(display_segments[4])):
+                display_segments[9] = segset
+            else:
+                display_segments[0] = segset
+            
+    values.append(int(decode(out, display_segments)))
 
-    #lengths = ([len(s) for s in row["out"].split()])
-    print(pattern, chars.get(len(out[0]), out[0]), 
-        chars.get(len(out[1]), out[1]), 
-        chars.get(len(out[2]), out[2]),
-        chars.get(len(out[3]), out[3]))
-
-    # 1 = 2 seg
-    # 4 = 4 seg
-    # 7 = 3 seg
-    # 8 = 7 seg
-
-    # 3 = len 5 & all seg in 1
-    # 2 = len 5, g & c
-    # 5 = len 5, e & f
-    # 
-    
+print(sum(values))
