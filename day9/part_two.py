@@ -1,10 +1,6 @@
 import numpy as np
 
 temp = []
-
-def fillArea(point):
-    return
-
 with open('input/input.txt') as file:
     for line in file:
         temp.append(list(map(int, list(line.rstrip()))))
