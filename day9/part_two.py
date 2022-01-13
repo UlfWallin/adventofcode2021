@@ -2,7 +2,10 @@ import numpy as np
 
 temp = []
 
-with open('input/sample.txt') as file:
+def fillArea(point):
+    return
+
+with open('input/input.txt') as file:
     for line in file:
         temp.append(list(map(int, list(line.rstrip()))))
 
@@ -20,13 +23,31 @@ for row in range(1, gridsize[0] - 1):
             lowpoint = (row, col, heightmap[(row, col)])
             lowpoints.append(lowpoint)
 
-# Expand from lowpoints
+# Flood fill from lowpoints
+# https://en.wikipedia.org/wiki/Flood_fill
+# lowpoint: tuple(row, col, height)
+basins = []
 for point in lowpoints:
     basin = []
+    visited = []
+    visited.append(point)
+    while len(visited) > 0:
+        pos = visited.pop()
+        if pos in basin:
+            continue
+        height = pos[2]
+        # W E N S
+        if height < 9:
+            row = pos[0]
+            col = pos[1]
+            basin.append((row, col, height))
+
+            visited.append((row, col - 1, heightmap[(row, col - 1)]))
+            visited.append((row, col + 1, heightmap[(row, col + 1)]))
+            visited.append((row - 1, col, heightmap[(row - 1, col)]))
+            visited.append((row + 1, col, heightmap[(row + 1, col)]))
+    basins.append(basin)        
     
-    # Recursive function - maze-solving?
-    # https://en.wikipedia.org/wiki/Maze-solving_algorithm
-    # l r 
-    # u l r
-    # d l r
-    print(point)
+largest = sorted([len(b) for b in basins], reverse=True)[:3]
+answer = np.prod(largest)
+print(answer)
