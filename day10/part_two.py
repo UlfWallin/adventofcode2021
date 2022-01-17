@@ -1,3 +1,5 @@
+from statistics import median
+
 open_c = "([{<"
 close_c = ")]}>"
 pairs = {'(': ')', '[': ']', '{': '}', '<': '>'}
@@ -7,7 +9,7 @@ instructions = []
 illegals = []
 line_points = []
 
-with open('day10/input/sample.txt') as file:
+with open('day10/input/input.txt') as file:
     for line in file:
         instructions.append(line)
 
@@ -25,16 +27,15 @@ for i, line in enumerate(instructions):
                 illegal = c
                 illegals.append(illegal)
                 line_error = True
-                print(f"SYNTAX ERROR on {i + 1},{ic + 1}. Found {illegal}. Expected {expected}")
                 break
 
     if len(chunk) > 0 and line_error == False:
-        missing = []
+        score = 0
         while len(chunk) > 0:
-            missing.insert(0, chunk.pop())
+            last_open = chunk.pop()
+            close_last_open = pairs[last_open]
+            score = (score * 5) + points[close_last_open]
 
-        print(missing)
-        # line_sum = sum([points[x] for x in missing])
-        # line_points.append(line_sum)
+        line_points.append(score)
 
-print(line_points)
+print(median(line_points))
