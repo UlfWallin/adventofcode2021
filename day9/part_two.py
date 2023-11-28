@@ -25,8 +25,7 @@ for row in range(1, gridsize[0] - 1):
 basins = []
 for point in lowpoints:
     basin = []
-    visited = []
-    visited.append(point)
+    visited = [point]
     while len(visited) > 0:
         pos = visited.pop()
         if pos in basin:
