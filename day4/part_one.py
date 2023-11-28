@@ -13,8 +13,8 @@ with open('input/sample.txt') as file:
         if line == '\n':
             boards.append(nums)
             nums = []
-    else:
-        boards.append(nums)
+    
+    boards.append(nums)
 
 bingo = False
 bingo_board = 0
